@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShoppingList.Views.ProductItemView">
+    <Frame Margin="5" Padding="10" CornerRadius="5" HasShadow="True">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="0" 
+                      IsChecked="{Binding IsPurchased}" 
+                      CheckedChanged="OnPurchasedChanged"
+                      VerticalOptions="Center"/>
+
+            <VerticalStackLayout Grid.Column="1" 
+                                 VerticalOptions="Center"
+                                 Margin="10,0,0,0">
+                <Label Text="{Binding Name}" 
+                       FontSize="16" 
+                       FontAttributes="Bold"/>
+                <Label Text="{Binding Unit}" 
+                       FontSize="12" 
+                       TextColor="Gray"/>
+            </VerticalStackLayout>
+
+            <HorizontalStackLayout Grid.Column="2" 
+                                   VerticalOptions="Center"
+                                   Margin="10,0,10,0">
+                <Button Text="-" 
+                        Clicked="OnDecreaseClicked"
+                        WidthRequest="40"
+                        HeightRequest="40"/>
+                <Entry Text="{Binding Quantity}" 
+                       Keyboard="Numeric"
+                       WidthRequest="60"
+                       HorizontalTextAlignment="Center"
+                       VerticalOptions="Center"
+                       TextChanged="OnQuantityChanged"/>
+                <Button Text="+" 
+                        Clicked="OnIncreaseClicked"
+                        WidthRequest="40"
+                        HeightRequest="40"/>
+            </HorizontalStackLayout>
+
+            <Button Grid.Column="3" 
+                    Text="Usuń" 
+                    Clicked="OnDeleteClicked"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    VerticalOptions="Center"/>
+        </Grid>
+    </Frame>
+</ContentView>

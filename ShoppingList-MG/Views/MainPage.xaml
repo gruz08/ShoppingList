@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShoppingList.Views.MainPage"
+             Title="Lista zakupów">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <HorizontalStackLayout Grid.Row="0" 
+                               Margin="10"
+                               Spacing="10">
+            <Button Text="Lista do sklepu" 
+                    Clicked="OnShowShoppingListClicked"/>
+            <Button Text="Widok sklepu" 
+                    Clicked="OnShowStoreViewClicked"/>
+        </HorizontalStackLayout>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout x:Name="CategoriesContainer" 
+                                 Padding="10">
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="2" 
+              Padding="10"
+              ColumnDefinitions="*,Auto,Auto">
+            <Entry x:Name="NewCategoryEntry" 
+                   Grid.Column="0"
+                   Placeholder="Nazwa nowej kategorii"
+                   VerticalOptions="Center"/>
+            <Button Grid.Column="1" 
+                    Text="Dodaj kategorię" 
+                    Clicked="OnAddCategoryClicked"
+                    Margin="5,0,0,0"/>
+            <Button Grid.Column="2" 
+                    Text="Dodaj produkt" 
+                    Clicked="OnAddProductClicked"
+                    Margin="5,0,0,0"/>
+        </Grid>
+    </Grid>
+</ContentPage>

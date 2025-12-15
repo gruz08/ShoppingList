@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShoppingList.Views.ShoppingListViewPage"
+             Title="Lista do sklepu">
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="ProductsContainer" 
+                             Padding="10">
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
