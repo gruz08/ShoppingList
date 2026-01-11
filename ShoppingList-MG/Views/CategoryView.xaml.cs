@@ -1,4 +1,5 @@
-﻿using ShoppingList.Models;
+using ShoppingList.Models;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
 namespace ShoppingList.Views
@@ -9,15 +10,31 @@ namespace ShoppingList.Views
         public event EventHandler<Product> ProductDeleted;
 
         private Category category;
+        private ObservableCollection<ProductItemView> productViews;
 
         public CategoryView()
         {
             InitializeComponent();
+            productViews = new ObservableCollection<ProductItemView>();
+
+            ProductsCollectionView.ItemTemplate = new DataTemplate(() =>
+            {
+                var contentView = new ContentView();
+                contentView.SetBinding(ContentView.ContentProperty, ".");
+                return contentView;
+            });
+
+            ProductsCollectionView.ItemsSource = productViews;
         }
 
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
+
+            if (category != null)
+            {
+                category.Products.CollectionChanged -= OnProductsCollectionChanged;
+            }
 
             if (BindingContext is Category cat)
             {
@@ -32,12 +49,8 @@ namespace ShoppingList.Views
             if (category != null)
             {
                 category.IsExpanded = !category.IsExpanded;
-                ProductsContainer.IsVisible = category.IsExpanded;
-
-                if (sender is Button button)
-                {
-                    button.Text = category.IsExpanded ? "▲" : "▼";
-                }
+                ProductsCollectionView.IsVisible = category.IsExpanded;
+                ExpandButton.Text = category.IsExpanded ? "▲" : "▼";
             }
         }
 
@@ -48,32 +61,41 @@ namespace ShoppingList.Views
 
         private void UpdateProductsList()
         {
-            ProductsContainer.Children.Clear();
+            foreach (var view in productViews)
+            {
+                view.ProductChanged -= OnProductChangedInternal;
+                view.ProductDeleted -= OnProductDeletedInternal;
+            }
+
+            productViews.Clear();
 
             if (category == null)
                 return;
 
-            var sortedProducts = category.Products
+            var orderedProducts = category.Products
                 .OrderBy(p => p.IsPurchased)
                 .ToList();
 
-            foreach (var product in sortedProducts)
+            foreach (var product in orderedProducts)
             {
                 var productView = new ProductItemView
                 {
                     BindingContext = product
                 };
 
-                productView.ProductChanged += OnProductChangedInternal;
-                productView.ProductDeleted += OnProductDeletedInternal;
-
                 if (product.IsPurchased)
                 {
                     productView.Opacity = 0.5;
                 }
 
-                ProductsContainer.Children.Add(productView);
+                productView.ProductChanged += OnProductChangedInternal;
+                productView.ProductDeleted += OnProductDeletedInternal;
+
+                productViews.Add(productView);
             }
+
+            ProductsCollectionView.IsVisible = category.IsExpanded;
+            ExpandButton.Text = category.IsExpanded ? "▲" : "▼";
         }
 
         private void OnProductChangedInternal(object sender, Product product)
