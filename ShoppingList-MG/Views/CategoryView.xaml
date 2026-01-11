@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:views="clr-namespace:ShoppingList.Views"
              x:Class="ShoppingList.Views.CategoryView">
     <VerticalStackLayout Margin="10">
-        <Frame Padding="10" 
-               CornerRadius="5" 
+        <Frame Padding="10"
+               CornerRadius="5"
                HasShadow="True"
                BackgroundColor="DarkGrey">
             <Grid>
@@ -15,22 +14,24 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Column="0"
-                       Text="{Binding Name}" 
-                       FontSize="18" 
+                       Text="{Binding Name}"
+                       FontSize="18"
                        FontAttributes="Bold"
                        VerticalOptions="Center"/>
 
                 <Button Grid.Column="1"
-                        Text="▼" 
+                        x:Name="ExpandButton"
+                        Text="▼"
                         Clicked="OnToggleExpanded"
                         BackgroundColor="Transparent"
                         WidthRequest="40"/>
             </Grid>
         </Frame>
 
-        <VerticalStackLayout x:Name="ProductsContainer" 
-                             IsVisible="False"
-                             Margin="10,5,0,0">
-        </VerticalStackLayout>
+        <CollectionView x:Name="ProductsCollectionView"
+                        IsVisible="False"
+                        SelectionMode="None"
+                        Margin="10,5,0,0">
+        </CollectionView>
     </VerticalStackLayout>
 </ContentView>
